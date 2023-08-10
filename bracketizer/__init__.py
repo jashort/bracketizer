@@ -25,9 +25,10 @@ def create_app(test_config=None):
     db.init_app(app)
     with app.app_context():
         from . import routes
-        from . import user, bracket
+        from . import user, bracket, vote
         app.register_blueprint(user.bp)
         app.register_blueprint(bracket.bp)
+        app.register_blueprint(vote.bp)
         db.create_all()
 
     return app

@@ -161,3 +161,7 @@ class BracketView:
             self._rounds.append(next_round)
 
             round_number += 1
+
+    def get_question(self, bracket_round: int, question: int) -> (str, str):
+        my_round = self.get_round(bracket_round)
+        return my_round.get_question(question)

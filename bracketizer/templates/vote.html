@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+
+{% block content %}
+
+    <h2>{{ bracket.name}}</h2>
+    <h3>Round {{ bracket_round }} Question {{ question_number }}</h3>
+
+    {{ render_form(form) }}
+
+{% endblock %}
