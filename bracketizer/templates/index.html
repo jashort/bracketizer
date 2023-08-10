@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Brackets</h1>
+<ul>
+{% for bracket in brackets %}
+    <li>
+{#        <a href="{{ url_for('vote', bracket=bracket.name) }}">{{ bracket.name }}</a>#}
+        ({{ bracket.start_time }} - {{ bracket.end_time }})
+{#        [<a href="{{ url_for('bracket', bracket=bracket.name) }}">view</a>]#}
+{#        [<a href="{{ url_for('votes', bracket=bracket.name) }}">Total score</a>]#}
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
