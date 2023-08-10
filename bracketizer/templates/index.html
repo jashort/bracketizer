@@ -5,8 +5,8 @@
 <ul>
 {% for bracket in brackets %}
     <li>
-{#        <a href="{{ url_for('vote', bracket=bracket.name) }}">{{ bracket.name }}</a>#}
-        {{ bracket.bracket_name }}: {{ bracket.total_rounds() }} rounds
+        <a href="{{ url_for('bracket.bracket', bracket=bracket.name) }}">{{ bracket.name }}</a>:
+        {{ bracket.total_rounds() }} rounds
         ({{ bracket.start_time }} - {{ bracket.end_time }})
 {#        [<a href="{{ url_for('bracket', bracket=bracket.name) }}">view</a>]#}
 {#        [<a href="{{ url_for('votes', bracket=bracket.name) }}">Total score</a>]#}

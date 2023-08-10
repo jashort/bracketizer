@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+
+{% block content %}
+
+    <h2>{{ bracket.name}}</h2>
+
+    <table class="table table-borderless table-striped">
+    <thead>
+    <tr class="thead-dark">
+        {% for h in header %}
+            <th>{{ h }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in data %}
+        <tr>
+        {% for cell in row %}
+            <td>
+                {{ cell }}
+            </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

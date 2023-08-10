@@ -1,5 +1,4 @@
 from sqlalchemy import func
-from sqlalchemy.sql import expression
 
 from exceptions import BracketException
 from . import db
@@ -14,7 +13,7 @@ class User(db.Model):
 
 class Bracket(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
-    bracket_name: str = db.Column(db.String(250), nullable=False, index=True)
+    name: str = db.Column(db.String(250), nullable=False, index=True)
     choices: [str] = db.Column(db.JSON, nullable=False, default=[])
     start_time = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
@@ -60,7 +59,7 @@ class Vote(db.Model):
 
 def load_data():
     if db.session.query(Bracket).count() == 0:
-        b = Bracket(bracket_name="Favorite Things",
+        b = Bracket(name="Favorite Things",
                     choices=["Raindrops on roses",
                              "whiskers on kittens",
                              "Bright copper kettles",
@@ -75,5 +74,5 @@ def load_data():
 
 try:
     load_data()
-except:
-    pass
+except Exception as ex:
+    print(ex)
