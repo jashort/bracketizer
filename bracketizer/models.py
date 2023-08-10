@@ -1,6 +1,7 @@
 from sqlalchemy import func
 from sqlalchemy.sql import expression
 
+from exceptions import BracketException
 from . import db
 
 
@@ -22,6 +23,24 @@ class Bracket(db.Model):
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     deleted = db.Column(db.Boolean, default=False, nullable=False)
+
+    def total_rounds(self) -> int:
+        """Returns the total number of rounds in this bracket, including the
+        final winner (only one choice)"""
+        total_choices = len(self.choices)
+        if total_choices < 2:
+            raise BracketException("Not enough choices, you must have at least 2")
+        # Check to see if the number of choices is a power of two
+        if (total_choices & (total_choices - 1) != 0) or total_choices == 0:
+            raise BracketException("You must have an even number of choices!")
+        rounds = 0
+        while total_choices > 1:
+            rounds += 1
+            total_choices = total_choices / 2
+        # That will get us the number of rounds where there are at least
+        # two choices, add one for the final round with the winner
+        return rounds + 1
+
 
 
 class Vote(db.Model):

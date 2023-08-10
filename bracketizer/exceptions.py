@@ -1,0 +1,3 @@
+
+class BracketException(Exception):
+    pass
