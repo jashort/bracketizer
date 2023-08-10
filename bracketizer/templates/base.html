@@ -32,9 +32,9 @@
             <ul class="navbar-nav mr-auto">
                 {{ render_nav_item('index', 'Home') }}
                 {% if session.username %}
-                    {{ render_nav_item('user', session.username) }}
+                    {{ render_nav_item('user.user', session.username) }}
                     {% else %}
-                    {{ render_nav_item('user', 'Log In') }}
+                    {{ render_nav_item('user.user', 'Log In') }}
                 {% endif %}
             </ul>
         </div>
