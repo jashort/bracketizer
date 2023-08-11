@@ -7,8 +7,8 @@
 <tr>
     <th>Bracket</th>
     <th class="text-center">Round</th>
-    <th>Start</th>
-    <th>End</th>
+    <th>Bracket Starts</th>
+    <th>Bracket Ends</th>
     <th></th>
 </tr>
 </thead>
@@ -18,6 +18,8 @@
     <td><a href="{{ url_for('bracket.bracket', bracket=bracket.name) }}">{{ bracket.name }}</a></td>
     <td class="text-center">{% if bracket.current_round == 0 %}
         Voting
+        {% elif bracket.current_round > bracket.total_rounds() %}
+        Done
         {% else %}
         {{ bracket.current_round }}/{{ bracket.total_rounds() }}
         {% endif %}
@@ -27,10 +29,8 @@
     <td>
         {% if bracket.start_time <= now <= bracket.end_time %}
             {% if bracket.current_round == 0 %}
-                Open for voting!
                 <a class="btn btn-primary btn-sm" href="{{ url_for('vote.vote', bracket=bracket.name) }}">Vote</a>
             {% elif now < bracket.end_time %}
-                Guessing Round {{ bracket.current_round }}
                 <a class="btn btn-primary btn-sm"  href="{{ url_for('guess.guess', bracket=bracket.name, round=bracket.current_round) }}">Guess</a>
             {% endif %}
         {% endif %}
