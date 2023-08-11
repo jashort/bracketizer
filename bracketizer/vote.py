@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import request, session, flash, render_template, redirect, Blueprint, url_for, abort
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, RadioField, HiddenField
-
+from sqlalchemy.dialects.sqlite import insert as sqlite_upsert
 
 from bracketizer.models import Bracket, Vote, db
 from bracketview import BracketView
@@ -40,14 +40,22 @@ def vote():
         my_form.choice.choices = bv.get_question(round_number, question_number)
 
         if my_form.validate_on_submit():
-            # TODO: Upsert on bracket_id, user_id, question_id
-            # TODO: Make sure bracket is open for voting
-            v = Vote(username=session['username'], bracket_id=my_bracket.id, round_number=round_number,
-                     question_number=question_number, choice=my_form.choice.data)
-            db.session.add(v)
+            # Upsert votes for a given user/bracket/round/question. You can change it as long
+            # as voting is still open.
+            stmt = sqlite_upsert(Vote).values([{"username": session['username'], "bracket_id": my_bracket.id,
+                                                "round_number": round_number, "question_number": question_number,
+                                                "choice": my_form.choice.data}
+                                               ])
+            stmt = stmt.on_conflict_do_update(
+                index_elements=[Vote.username, Vote.bracket_id, Vote.round_number, Vote.question_number],
+                set_={"choice": my_form.choice.data}
+            )
+            db.session.execute(stmt)
             db.session.commit()
+
             if question_number < my_round.total_questions():
-                return redirect(url_for('vote.vote', bracket=bracket_name, round=round_number, question=question_number + 1))
+                return redirect(
+                    url_for('vote.vote', bracket=bracket_name, round=round_number, question=question_number + 1))
             elif round_number < my_bracket.total_rounds() - 1:
                 return redirect(url_for('vote.vote', bracket=bracket_name, round=round_number + 1, question=1))
             else:
