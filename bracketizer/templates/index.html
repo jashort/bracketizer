@@ -18,7 +18,7 @@
     <td><a href="{{ url_for('bracket.bracket', bracket=bracket.name) }}">{{ bracket.name }}</a></td>
     <td class="text-center">{% if bracket.current_round == 0 %}
         Voting
-        {% elif bracket.current_round > bracket.total_rounds() %}
+        {% elif not bracket.is_open %}
         Done
         {% else %}
         {{ bracket.current_round }}/{{ bracket.total_rounds() }}

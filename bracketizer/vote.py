@@ -28,7 +28,7 @@ def vote():
             url_for('user.user', next_page="vote", bracket=bracket_name, round=round_number, question=question_number))
     try:
         my_bracket = Bracket.query.filter_by(name=bracket_name).first()
-        if my_bracket.current_round != 0 or datetime.utcnow() < my_bracket.start_time:
+        if my_bracket.current_round != 0 or datetime.utcnow() < my_bracket.start_time or not my_bracket.is_open:
             flash("No peeking! This bracket isn't open for voting")
             return redirect(url_for('index'))
 

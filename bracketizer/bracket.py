@@ -20,8 +20,9 @@ def bracket():
         flash("No peeking! This round isn't open yet")
         return redirect(url_for('index'))
 
-    votes = Vote.query.filter_by(username=session['username'], bracket_id=my_bracket.id)
-
+    # Don't show votes, this cuts down on the risk of cheating
+    # votes = Vote.query.filter_by(username=session['username'], bracket_id=my_bracket.id)
+    votes = []
     bv = BracketView(my_bracket, votes)
 
     return render_template('bracket.html',

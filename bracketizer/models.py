@@ -20,6 +20,7 @@ class Bracket(db.Model):
     current_round: int = db.Column(db.Integer, nullable=False, default=0)
     """If 0, allow voting on the entire bracket. If 1+, only allow guesses
      in that round"""
+    is_open: bool = db.Column(db.Boolean, nullable=False, default=False)
     choices: [str] = db.Column(db.JSON, nullable=False, default=[])
     """All choices available in this bracket"""
     start_time = db.Column(db.DateTime(timezone=True),
@@ -86,6 +87,7 @@ class Guess(db.Model):
 def load_data():
     if db.session.query(Bracket).count() == 0:
         b = Bracket(name="Favorite Things",
+                    is_open=True,
                     start_time=datetime.utcnow(),
                     end_time=datetime.utcnow() + timedelta(days=21),
                     choices=["Raindrops on roses",
@@ -98,6 +100,7 @@ def load_data():
                              "Doorbells"
                              ])
         c = Bracket(name="More Favorite Things",
+                    is_open=True,
                     start_time=datetime.utcnow(),
                     end_time=datetime.utcnow() + timedelta(days=21),
                     current_round=1,
@@ -111,6 +114,7 @@ def load_data():
                              "Doorbells"
                              ])
         d = Bracket(name="Closed Favorite Things",
+                    is_open=False,
                     start_time=datetime.utcnow() - timedelta(days=7),
                     end_time=datetime.utcnow() - timedelta(days=5),
                     current_round=4,
