@@ -66,6 +66,23 @@ class Vote(db.Model):
         return f'<Vote {self.username} {self.bracket_name} {self.round_number} {self.question_number}>'
 
 
+class Guess(db.Model):
+    id: int = db.Column(db.Integer, primary_key=True)
+    username: str = db.Column(db.String(100), nullable=False, index=True)
+    bracket_id = db.Column("bracket_id", db.ForeignKey(Bracket.id))
+    round_number: int = db.Column(db.Integer, nullable=False, index=True)
+    question_number: int = db.Column(db.Integer, nullable=False)
+    choice: str = db.Column(db.String(250), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    __table_args__ = (UniqueConstraint('username', 'bracket_id', 'round_number', 'question_number',
+                                       name='_guess_uc'),
+                      )
+
+    def __repr__(self):
+        return f'<Guess {self.username} {self.bracket_name} {self.round_number} {self.question_number}>'
+
+
 def load_data():
     if db.session.query(Bracket).count() == 0:
         b = Bracket(name="Favorite Things",
@@ -80,10 +97,34 @@ def load_data():
                              "crisp apple strudels",
                              "Doorbells"
                              ])
+        c = Bracket(name="More Favorite Things",
+                    start_time=datetime.utcnow(),
+                    end_time=datetime.utcnow() + timedelta(days=21),
+                    current_round=1,
+                    choices=["Raindrops on roses",
+                             "whiskers on kittens",
+                             "Bright copper kettles",
+                             "warm woolen mittens",
+                             "Brown paper packages tied up with strings",
+                             "Cream-colored ponies",
+                             "crisp apple strudels",
+                             "Doorbells"
+                             ])
         db.session.add(b)
+        db.session.add(c)
         db.session.commit()
 
-
+        votes = [(1, 1, 'Raindrops on roses'),
+                 (1, 2, 'warm woolen mittens'),
+                 (1, 3, 'Cream-colored ponies'),
+                 (1, 4, 'crisp apple strudels'),
+                 (2, 1, 'Raindrops on roses'),
+                 (2, 2, 'crisp apple strudels'),
+                 (3, 1, 'crisp apple strudels')]
+        for v in votes:
+            my_vote = Vote(username="user", bracket_id=c.id, round_number=v[0], question_number=v[1], choice=v[2])
+            db.session.add(my_vote)
+        db.session.commit()
 try:
     load_data()
 except Exception as ex:

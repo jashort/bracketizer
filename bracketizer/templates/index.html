@@ -2,24 +2,44 @@
 
 {% block content %}
 <h1>Brackets</h1>
-<ul>
+<table class="table thead-dark thead-inverse">
+<thead>
+<tr>
+    <th>Bracket</th>
+    <th class="text-center">Round</th>
+    <th>Start</th>
+    <th>End</th>
+    <th></th>
+</tr>
+</thead>
+<tbody>
 {% for bracket in brackets %}
-    <li>
-        <a href="{{ url_for('bracket.bracket', bracket=bracket.name) }}">{{ bracket.name }}</a>:
-        {{ bracket.total_rounds() }} rounds
-        ({{ bracket.start_time }} - {{ bracket.end_time }})
+    <tr>
+    <td><a href="{{ url_for('bracket.bracket', bracket=bracket.name) }}">{{ bracket.name }}</a></td>
+    <td class="text-center">{% if bracket.current_round == 0 %}
+        Voting
+        {% else %}
+        {{ bracket.current_round }}/{{ bracket.total_rounds() }}
+        {% endif %}
+    </td>
+    <td>{{ bracket.start_time }}</td>
+    <td>{{ bracket.end_time }}</td>
+    <td>
         {% if bracket.start_time <= now <= bracket.end_time %}
             {% if bracket.current_round == 0 %}
                 Open for voting!
-                [<a href="{{ url_for('vote.vote', bracket=bracket.name) }}">Vote</a>]
+                <a class="btn btn-primary btn-sm" href="{{ url_for('vote.vote', bracket=bracket.name) }}">Vote</a>
             {% elif now < bracket.end_time %}
                 Guessing Round {{ bracket.current_round }}
-                [<a href="{{ url_for('vote.vote', bracket=bracket.name) }}">Guess</a>]
+                <a class="btn btn-primary btn-sm"  href="{{ url_for('guess.guess', bracket=bracket.name, round=bracket.current_round) }}">Guess</a>
             {% endif %}
         {% endif %}
-
-{#        [<a href="{{ url_for('votes', bracket=bracket.name) }}">Total score</a>]#}
-    </li>
+    </td>
+    </tr>
 {% endfor %}
-</ul>
+</tbody>
+</table>
+
+{#    TODO: Idea: Show times in local timezone. Javascript to change it?#}
+{#        [<a href="{{ url_for('votes', bracket=bracket.name) }}">Total score</a>]#}
 {% endblock %}
