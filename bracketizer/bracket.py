@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import request, session, render_template, redirect, Blueprint, url_for, flash
 
 from bracketview import BracketView
-from .models import db, Bracket, Vote
+from .models import db, Bracket
 
 
 bp = Blueprint('bracket', __name__, url_prefix='/bracket')

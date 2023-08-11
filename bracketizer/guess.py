@@ -1,8 +1,6 @@
 from datetime import datetime
 
 from flask import request, session, flash, render_template, redirect, Blueprint, url_for, abort
-from flask_wtf import FlaskForm
-from wtforms import SubmitField, RadioField, HiddenField
 from sqlalchemy.dialects.sqlite import insert as sqlite_upsert
 
 from bracketizer.models import Bracket, Vote, db, Guess
@@ -23,7 +21,10 @@ def guess():
             url_for('user.user', next_page="vote", bracket=bracket_name, round=round_number, question=question_number))
     try:
         my_bracket = Bracket.query.filter_by(name=bracket_name).first()
-        if my_bracket.current_round != round_number or datetime.utcnow() < my_bracket.start_time or datetime.utcnow() > my_bracket.end_time or not my_bracket.is_open:
+        if my_bracket.current_round != round_number \
+                or datetime.utcnow() < my_bracket.start_time \
+                or datetime.utcnow() > my_bracket.end_time \
+                or not my_bracket.is_open:
             flash("No peeking! This round isn't open for guessing")
             return redirect(url_for('index'))
 

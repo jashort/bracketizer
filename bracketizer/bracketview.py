@@ -95,7 +95,7 @@ class BracketView:
         data = []
         # Generate grid
         for i in range(len(self._bracket.choices) * 2):
-            data.append([""] * (self.total_rounds))
+            data.append([""] * self.total_rounds)
 
         spaces = 2  # spaces between items in first round
         offset = 0  # vertical offset

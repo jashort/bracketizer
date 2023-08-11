@@ -143,6 +143,8 @@ def load_data():
             my_vote = Vote(username="user", bracket_id=c.id, round_number=v[0], question_number=v[1], choice=v[2])
             db.session.add(my_vote)
         db.session.commit()
+
+
 try:
     load_data()
 except Exception as ex:
