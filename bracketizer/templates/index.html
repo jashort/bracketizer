@@ -8,7 +8,16 @@
         <a href="{{ url_for('bracket.bracket', bracket=bracket.name) }}">{{ bracket.name }}</a>:
         {{ bracket.total_rounds() }} rounds
         ({{ bracket.start_time }} - {{ bracket.end_time }})
-        [<a href="{{ url_for('vote.vote', bracket=bracket.name) }}">Vote</a>]
+        {% if bracket.start_time <= now <= bracket.end_time %}
+            {% if bracket.current_round == 0 %}
+                Open for voting!
+                [<a href="{{ url_for('vote.vote', bracket=bracket.name) }}">Vote</a>]
+            {% elif now < bracket.end_time %}
+                Guessing Round {{ bracket.current_round }}
+                [<a href="{{ url_for('vote.vote', bracket=bracket.name) }}">Guess</a>]
+            {% endif %}
+        {% endif %}
+
 {#        [<a href="{{ url_for('votes', bracket=bracket.name) }}">Total score</a>]#}
     </li>
 {% endfor %}

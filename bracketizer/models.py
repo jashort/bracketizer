@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from sqlalchemy import func, UniqueConstraint
 
 from exceptions import BracketException
@@ -5,6 +7,7 @@ from . import db
 
 
 class User(db.Model):
+    """ A specific user """
     id: int = db.Column(db.Integer, primary_key=True)
     username: str = db.Column(db.String(100), nullable=False, index=True)
     created_at = db.Column(db.DateTime(timezone=True),
@@ -14,7 +17,11 @@ class User(db.Model):
 class Bracket(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
     name: str = db.Column(db.String(250), nullable=False, index=True)
+    current_round: int = db.Column(db.Integer, nullable=False, default=0)
+    """If 0, allow voting on the entire bracket. If 1+, only allow guesses
+     in that round"""
     choices: [str] = db.Column(db.JSON, nullable=False, default=[])
+    """All choices available in this bracket"""
     start_time = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     end_time = db.Column(db.DateTime(timezone=True),
@@ -62,6 +69,8 @@ class Vote(db.Model):
 def load_data():
     if db.session.query(Bracket).count() == 0:
         b = Bracket(name="Favorite Things",
+                    start_time=datetime.utcnow(),
+                    end_time=datetime.utcnow() + timedelta(days=21),
                     choices=["Raindrops on roses",
                              "whiskers on kittens",
                              "Bright copper kettles",

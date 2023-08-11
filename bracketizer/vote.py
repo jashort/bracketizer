@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import request, session, flash, render_template, redirect, Blueprint, url_for, abort
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, RadioField, HiddenField
@@ -23,9 +25,13 @@ def vote():
     question_number = int(request.args.get("question", 1))
     if 'username' not in session:
         return redirect(
-            url_for('username', next_page="vote", bracket=bracket_name, round=round_number, question=question_number))
+            url_for('user.user', next_page="vote", bracket=bracket_name, round=round_number, question=question_number))
     try:
         my_bracket = Bracket.query.filter_by(name=bracket_name).first()
+        if my_bracket.current_round != 0 or datetime.utcnow() < my_bracket.start_time:
+            flash("No peeking! This round isn't open for voting")
+            return redirect(url_for('index'))
+
         votes = Vote.query.filter_by(username=session['username'], bracket_id=my_bracket.id)
 
         bv = BracketView(my_bracket, votes)
@@ -35,7 +41,7 @@ def vote():
 
         if my_form.validate_on_submit():
             # TODO: Upsert on bracket_id, user_id, question_id
-            # TODO: Make sure backet is open for voting
+            # TODO: Make sure bracket is open for voting
             v = Vote(username=session['username'], bracket_id=my_bracket.id, round_number=round_number,
                      question_number=question_number, choice=my_form.choice.data)
             db.session.add(v)
