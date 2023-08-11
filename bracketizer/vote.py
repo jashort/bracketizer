@@ -29,7 +29,7 @@ def vote():
     try:
         my_bracket = Bracket.query.filter_by(name=bracket_name).first()
         if my_bracket.current_round != 0 or datetime.utcnow() < my_bracket.start_time:
-            flash("No peeking! This round isn't open for voting")
+            flash("No peeking! This bracket isn't open for voting")
             return redirect(url_for('index'))
 
         votes = Vote.query.filter_by(username=session['username'], bracket_id=my_bracket.id)
