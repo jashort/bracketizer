@@ -110,8 +110,22 @@ def load_data():
                              "crisp apple strudels",
                              "Doorbells"
                              ])
+        d = Bracket(name="Closed Favorite Things",
+                    start_time=datetime.utcnow() - timedelta(days=7),
+                    end_time=datetime.utcnow() - timedelta(days=5),
+                    current_round=4,
+                    choices=["Raindrops on roses",
+                             "whiskers on kittens",
+                             "Bright copper kettles",
+                             "warm woolen mittens",
+                             "Brown paper packages tied up with strings",
+                             "Cream-colored ponies",
+                             "crisp apple strudels",
+                             "Doorbells"
+                             ])
         db.session.add(b)
         db.session.add(c)
+        db.session.add(d)
         db.session.commit()
 
         votes = [(1, 1, 'Raindrops on roses'),
