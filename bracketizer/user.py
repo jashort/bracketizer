@@ -1,4 +1,6 @@
-from flask import request, session, flash, render_template, redirect, Blueprint, url_for
+import uuid
+
+from flask import request, session, flash, render_template, redirect, Blueprint, url_for, current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
@@ -21,10 +23,13 @@ def user():
 
     if 'username' in session and my_form.username.data is None:
         my_form.username.data = session['username']
-
     if my_form.validate_on_submit():
         flash(f"Welcome {my_form.username.data}")
         session['username'] = my_form.username.data
+        if 'session_uuid' not in session or session['session_uuid'] is None:
+            session['session_uuid'] = uuid.uuid4().hex
+        current_app.logger.info(f"{session['username']} set in session {session['session_uuid']}")
+
         if next_page is None:
             return redirect(url_for('index'))
         else:
