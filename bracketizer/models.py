@@ -140,7 +140,7 @@ def load_data():
                  (2, 2, 'crisp apple strudels'),
                  (3, 1, 'crisp apple strudels')]
         for v in votes:
-            my_vote = Vote(username="user", bracket_id=c.id, round_number=v[0], question_number=v[1], choice=v[2])
+            my_vote = Vote(username="testuser", bracket_id=c.id, round_number=v[0], question_number=v[1], choice=v[2])
             db.session.add(my_vote)
         db.session.commit()
 
