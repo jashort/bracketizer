@@ -6,7 +6,7 @@ from bracketview import BracketView
 from .models import db, Bracket
 
 
-bp = Blueprint('bracket', __name__, url_prefix='/bracket')
+bp = Blueprint('bracket', __name__, url_prefix='/')
 
 
 @bp.route('/bracket', methods=['GET'])

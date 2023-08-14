@@ -8,7 +8,7 @@ from bracketizer.models import Bracket, Vote, db
 from bracketview import BracketView
 from exceptions import BracketException
 
-bp = Blueprint('vote', __name__, url_prefix='/vote')
+bp = Blueprint('vote', __name__, url_prefix='/')
 
 
 class VoteForm(FlaskForm):
@@ -95,6 +95,8 @@ def vote():
                 # but practically I don't expect that to matter. Is someone really
                 # switching back and forth between tabs voting in different brackets in
                 # the same session? Doubtful.
+                # TODO: Show a "what your votes were" page once, THEN clear votes from
+                # TODO: the session.
                 session['votes'] = to_keep_in_session
                 session.modified = True
                 flash('Saved!')

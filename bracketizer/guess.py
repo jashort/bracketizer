@@ -8,7 +8,7 @@ from bracketview import BracketView
 from exceptions import BracketException
 from vote import VoteForm
 
-bp = Blueprint('guess', __name__, url_prefix='/guess')
+bp = Blueprint('guess', __name__, url_prefix='/')
 
 
 @bp.route('/guess', methods=['GET', 'POST'])
