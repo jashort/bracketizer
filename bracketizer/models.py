@@ -25,8 +25,10 @@ class Bracket(db.Model):
     """All choices available in this bracket"""
     start_time = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
+    """Start time, UTC"""
     end_time = db.Column(db.DateTime(timezone=True),
                          server_default=func.now())
+    """End time, UTC"""
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     deleted = db.Column(db.Boolean, default=False, nullable=False)

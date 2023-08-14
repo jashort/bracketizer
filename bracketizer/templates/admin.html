@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Brackets</h1>
+<h1>Admin</h1>
 <table class="table thead-dark thead-inverse">
 <thead>
 <tr>
@@ -27,13 +27,6 @@
     <td class="timestamp">{{ bracket.start_time }}</td>
     <td class="timestamp">{{ bracket.end_time }}</td>
     <td>
-        {% if bracket.start_time <= now <= bracket.end_time %}
-            {% if bracket.current_round == 0 %}
-                <a class="btn btn-primary btn-sm" href="{{ url_for('vote.vote', bracket=bracket.name) }}">Vote</a>
-            {% elif now < bracket.end_time %}
-                <a class="btn btn-primary btn-sm"  href="{{ url_for('guess.guess', bracket=bracket.name, round=bracket.current_round) }}">Guess</a>
-            {% endif %}
-        {% endif %}
     </td>
     </tr>
 {% endfor %}
