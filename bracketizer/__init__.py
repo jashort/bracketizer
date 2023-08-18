@@ -2,9 +2,8 @@ import os
 
 from flask import Flask
 from flask_bootstrap import Bootstrap5
-from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from models import db
 
 
 def create_app(test_config=None):
