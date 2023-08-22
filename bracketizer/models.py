@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, UniqueConstraint
 
-from exceptions import BracketException
+from .exceptions import (BracketException)
 
 db = SQLAlchemy()
 

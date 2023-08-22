@@ -3,10 +3,10 @@ from datetime import datetime
 from flask import request, session, flash, render_template, redirect, Blueprint, url_for, abort
 from sqlalchemy.dialects.sqlite import insert as sqlite_upsert
 
-from bracketizer.models import Bracket, Vote, db, Guess
-from bracketview import BracketView
-from exceptions import BracketException
-from vote import VoteForm
+from .models import Bracket, Vote, db, Guess
+from .bracketview import BracketView
+from .exceptions import BracketException
+from .vote import VoteForm
 
 bp = Blueprint('guess', __name__, url_prefix='/')
 

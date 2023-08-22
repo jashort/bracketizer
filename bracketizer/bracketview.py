@@ -1,9 +1,9 @@
 import dataclasses
 import hashlib
 
-from exceptions import BracketException
+from .exceptions import BracketException
 
-from bracketizer.models import Bracket, Vote
+from .models import Bracket, Vote
 
 
 @dataclasses.dataclass

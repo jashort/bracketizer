@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_bootstrap import Bootstrap5
 
-from models import db
+from .models import db
 
 
 def create_app(test_config=None):
@@ -11,7 +11,7 @@ def create_app(test_config=None):
     bootstrap = Bootstrap5(app)
 
     if test_config is None:
-        app.config.from_object('config.Config')
+        app.config.from_object('bracketizer.config.Config')
     else:
         app.config.from_mapping(test_config)
 

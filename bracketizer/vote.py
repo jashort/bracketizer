@@ -4,9 +4,9 @@ from flask import request, session, flash, render_template, redirect, Blueprint,
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, RadioField, HiddenField
 
-from bracketizer.models import Bracket, Vote, db
-from bracketview import BracketView
-from exceptions import BracketException
+from .models import Bracket, Vote, db
+from .bracketview import BracketView
+from .exceptions import BracketException
 
 bp = Blueprint('vote', __name__, url_prefix='/')
 

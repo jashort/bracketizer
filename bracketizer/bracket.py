@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import request, session, render_template, redirect, Blueprint, url_for, flash
 
-from bracketview import BracketView
+from .bracketview import BracketView
 from .models import db, Bracket
 
 
