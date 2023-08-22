@@ -2,8 +2,7 @@ import os
 
 from flask import Flask
 from flask_bootstrap import Bootstrap5
-
-from .models import db
+from .database import db
 
 
 def create_app(test_config=None):
@@ -21,6 +20,7 @@ def create_app(test_config=None):
         pass
 
     db.init_app(app)
+
     with app.app_context():
         from . import routes
         from . import user, bracket, vote, guess
@@ -31,3 +31,4 @@ def create_app(test_config=None):
         db.create_all()
 
     return app
+
